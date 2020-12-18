@@ -1,84 +1,133 @@
-import {useState, useEffect} from "react";
-import styled, {css} from "styled-components";
+import React, {useState, useEffect} from "react";
 
-import UniformLayerContainer from "./UniformLayerContainer";
+import ContainerGrid from "./ContainerGrid";
+import LayerContainer from "./LayerContainer";
 
-export default function UniformResponse(props) {
+import WindowResize from "./WindowResize";
 
-    // Fundamental Aspect Ratio ///////////////////////////////////////////////
+export default function UniformResponse({children}) {
+
+    // FUNDAMENTAL SETTINGS ///////////////////////////////////////////////
     const ratioWidth = 2;
     const ratioHeight = 3;
     const ratio = ratioWidth / ratioHeight;
+    const gapRatio = 1;
 
     // STATE ///////////////////////////////////////////////////////////////////////
 
-    // Size -------------------------------------------------------------------
-    const [width, setWidth] = useState(window.innerWidth);
-    const [height, setHeight] = useState(window.innerHeight);
+    // Styled Div Size ----------------------------------------------------------
+    const [width] = useState(window.innerWidth);
+    const [height] = useState(window.innerHeight);
 
     // Layer Containers ------------------------------------------------------
-    const [layerContainerWidth, setLayerContainerWidth] = useState(null);
-    const [layerContainerHeight, setLayerContainerHeight] = useState(null);
+    const [layerContainerSize] = useState(calcLayerContainerSize());
+    const [secondaryContainer, setSecondaryContainer] = useState(false);
 
-    function calculateLayerContainerSize() {
+    function calcLayerContainerSize() {
+        const layerContainer = {
+            width: null,
+            height: null,
+        };
 
         if (ratio <= 1) {
-            const width = Math.min(
+            layerContainer.width = Math.min(
                 window.innerWidth,
-                Math.round(window.innerHeight * (ratioWidth/ratioHeight)) 
+                window.innerHeight * (ratioWidth / ratioHeight)
             );
-            setLayerContainerWidth(width);
-            setLayerContainerHeight(Math.round(width * (ratioHeight/ratioWidth)));
+            layerContainer.height = layerContainer.width * (ratioHeight / ratioWidth);
+            return layerContainer;
         }
         else {
-            const height = Math.min(
+            layerContainer.height = Math.min(
                 window.innerHeight,
-                Math.round(window.innerWidth * (ratioHeight/ratioWidth))
+                window.innerWidth * (ratioHeight / ratioWidth)
             );
-            setLayerContainerHeight(height);
-            setLayerContainerWidth(Math.round(height * (ratioWidth/ratioHeight)));
+            layerContainer.width = layerContainer.height * (ratioWidth / ratioHeight);
+            return layerContainer;
         }
     }
 
-    // This makes sure we calculate the layer container size on first render.
+    // Dual Container --------------------------------------------------------
+    function calcGrid() {
+        const grid = {
+            colNum: 1,
+            rowNum: 1,
+            gap: 0,
+        };
+
+        const dualWidth = layerContainerSize.width * 2;
+        const dualHeight = layerContainerSize.height * 2;
+
+        if (ratio <= 1 && window.innerWidth > dualWidth) {
+            grid.colNum = 2;
+            grid.gap = (window.innerWidth - dualWidth) / gapRatio;                
+        }
+        else if (ratio > 1 && window.innerHeight > dualHeight){
+            grid.row = 2;
+            grid.gap = (window.innerHeight - dualHeight) / gapRatio;
+        }
+
+        return grid;
+    }
+
+    const [grid] = useState(calcGrid());
+
+    // If our grid settings change, we make sure to respond appropriately
+    // checking to see if we should have a second layer container
     useEffect(()=> {
-        calculateLayerContainerSize();
-    },[]);
+        setSecondaryContainer(grid.colNum === 2 || grid.rowNum === 2);
+    }, [grid]);
 
-    // DUAL CONTAINER //////////////////////////////////////////////////////////////
-    function setupDualContainer() {
-        if (ratio <= 1) {
-            if (window.innerWidth > layerContainerWidth * 2) {
-                
-            }
-        }
+    // EVENT HANDLERS //////////////////////////////////////////////////////////
+
+    // Refreshes the page after (delay) milliseconds.
+    const delay = 2000;
+    WindowResize(delay);
+
+    // STYLES ////////////////////////////////////////////////////////////////////
+    const style = {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+
+        width: `${width}px`,
+        height: `${height}px`,
     }
 
-    // EVENT HANDLERS ////////////////////////////////////////////////////////////
-    window.addEventListener("resize", () => {
-        calculateLayerContainerSize();
-        setWidth(window.innerWidth);
-        setHeight(window.innerHeight);
+    // CHILDREN ///////////////////////////////////////////////
+    // Here we add props to the child elements, aka uniform layers
+    const uniformLayers = React.Children.map(children, child => {
+        return React.cloneElement(child, {
+            width: layerContainerSize.width,
+            height: layerContainerSize.height,
+        });
     });
-
-    // STYLES /////////////////////////////////////////////////////////////////////
-    const UniformResponseDiv = styled.div`${props=> css`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        width: ${width}px;
-        height: ${height}px;
-    `}`;
 
     // RENDER //////////////////////////////////////////////////////////////////
     return (
-        <UniformResponseDiv>
-            <UniformLayerContainer 
-                width={layerContainerWidth}
-                height={layerContainerHeight}
+        <div style={style}>
+            <ContainerGrid
+                colNum={grid.colNum}
+                rowNum={grid.rowNum}
+                gap={grid.gap}
             >
-            </UniformLayerContainer>
-        </UniformResponseDiv>
-    )   
+                <LayerContainer
+                    width={layerContainerSize.width}
+                    height={layerContainerSize.height}
+                >
+                    {uniformLayers[0]}
+                </LayerContainer>
+                {
+                    secondaryContainer ?
+                    <LayerContainer
+                        width={layerContainerSize.width}
+                        height={layerContainerSize.height}
+                    >
+                        {uniformLayers[1]}
+                    </LayerContainer>
+                    : null
+                }
+            </ContainerGrid>
+        </div>
+    ) 
 }
