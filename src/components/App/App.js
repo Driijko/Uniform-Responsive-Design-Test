@@ -1,15 +1,12 @@
-import './App.css';
-
 import UniformResponse from "../UniformResponse/UniformResponse";
-import Test from "../Pages/Test";
+
+import SiteMap from "../SiteMap/SiteMap";
+
 function App() {
 
   return (
     <div className="App">
-      <UniformResponse>
-        <Test />
-        <Test />
-      </UniformResponse>
+      <SiteMap />
     </div>
   );
 }
