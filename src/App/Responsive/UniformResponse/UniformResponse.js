@@ -3,9 +3,9 @@ import {Children, cloneElement, useState, useEffect} from "react";
 import ContainerGrid from "./ContainerGrid";
 import LayerContainer from "./LayerContainer";
 
-import WindowResize from "./WindowResize";
+import WindowResize from "../WindowResize";
 
-import {ratioWidth, ratioHeight, ratio, gapRatio} from "../../spatial";
+import {ratioWidth, ratioHeight, ratio, gapRatio} from "../../settings";
 
 export default function UniformResponse({children}) {
 
@@ -47,6 +47,7 @@ export default function UniformResponse({children}) {
     const [grid] = useState(calcGrid());
 
     function calcGrid() {
+
         const grid = {
             colNum: 1,
             rowNum: 1,
@@ -58,7 +59,7 @@ export default function UniformResponse({children}) {
         };
 
         // If UniformResponse only receives 2 children, it defaults to assuming
-        // that the first is the primary layer and the second is the gutter
+        // that a secondary container is not desired.
         const isTwoContainers = Children.count(children) === 3;
 
         if (ratio <= 1) {
@@ -104,22 +105,6 @@ export default function UniformResponse({children}) {
             }
         }
 
-        // If UniformResponse only receives 2 children, it defaults to assuming
-        // that the first is the primary layer and the second is the gutter
-        // if (Children.count(children) === 3) {
-        //     const dualWidth = layerContainerSize.width * 2;
-        //     const dualHeight = layerContainerSize.height * 2;
-    
-        //     if (ratio <= 1 && window.innerWidth > dualWidth) {
-        //         grid.colNum = 2;
-        //         grid.gap = (window.innerWidth - dualWidth) / gapRatio;
-        //     }
-        //     else if (ratio > 1 && window.innerHeight > dualHeight){
-        //         grid.row = 2;
-        //         grid.gap = (window.innerHeight - dualHeight) / gapRatio;
-        //     }
-        // }
-
         return grid;
     }
 
@@ -133,8 +118,7 @@ export default function UniformResponse({children}) {
     // EVENT HANDLERS //////////////////////////////////////////////////////////
 
     // Refreshes the page after (delay) milliseconds.
-    const delay = 2000;
-    WindowResize(delay);
+    WindowResize();
 
     // STYLES ////////////////////////////////////////////////////////////////////
     const style = {
@@ -146,7 +130,7 @@ export default function UniformResponse({children}) {
         height: `${height}px`,
     }
 
-    // CHILDREN ///////////////////////////////////////////////
+    // CHILDREN PROPS ////////////////////////////////////////////////////////////////
     // Here we add props to the child elements, aka uniform layers
     const layers = Children.map(children, (child, index) => {
         if (index === 0 || index === 2) {

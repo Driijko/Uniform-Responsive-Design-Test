@@ -1,6 +1,8 @@
 import {useEffect} from "react";
 
-export default function WindowResize(delay) {
+import {delay} from "../settings";
+
+export default function WindowResize() {
 
     useEffect(() => {
         let timeoutId = null;
