@@ -1,12 +1,27 @@
-import {Children, cloneElement, useState, useEffect} from "react";
+// IMPORTS ////////////////////////////////////////////////////////////////
+// Import Libraries -----------------------------------------------------------
+import {Children, cloneElement, useState} from "react";
+import styled, {css} from "styled-components";
 
+// Import Components ----------------------------------------------------------
 import ContainerGrid from "./ContainerGrid";
 import LayerContainer from "./LayerContainer";
-
 import WindowResize from "../WindowResize";
 
+// Import Settings -----------------------------------------------------------
 import {ratioWidth, ratioHeight, ratio, gapRatio} from "../../settings";
 
+// STYLE ///////////////////////////////////////////////////////////////////////
+const UniformDesignDiv = styled("div")`${props=>css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: ${props.width}px;
+    height: ${props.height}px;
+`}`
+
+// COMPONENT //////////////////////////////////////////////////////////////////////
 export default function UniformResponse({children}) {
 
     // STATE ///////////////////////////////////////////////////////////////////////
@@ -25,16 +40,6 @@ export default function UniformResponse({children}) {
 
     // Refreshes the page after (delay) milliseconds.
     WindowResize();
-
-    // STYLES ////////////////////////////////////////////////////////////////////
-    const style = {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-
-        width: `${width}px`,
-        height: `${height}px`,
-    }
 
     // CHILDREN PROPS ////////////////////////////////////////////////////////////////
     // Here we add props to the child elements, aka uniform layers
@@ -56,7 +61,7 @@ export default function UniformResponse({children}) {
 
     // RENDER //////////////////////////////////////////////////////////////////
     return (
-        <div style={style}>
+        <UniformDesignDiv width={width} height={height}>
             {layers[1]}
             <ContainerGrid
                 colNum={grid.colNum}
@@ -80,7 +85,7 @@ export default function UniformResponse({children}) {
                     : null
                 }
             </ContainerGrid>
-        </div>
+        </UniformDesignDiv>
     ) 
 }
 
