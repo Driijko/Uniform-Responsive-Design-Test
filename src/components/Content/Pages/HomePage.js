@@ -1,13 +1,15 @@
 import UniformResponse from "../../UniformResponse/UniformResponse";
 
 import Layer0 from "../Layers/Layer0";
-import Layer1 from "../Layers/Layer1";
+import GutterTemplate from "../Layers/GutterTemplate";
+import Layer2 from "../Layers/Layer2";
 
 export default function HomePage(props) {
     return (
         <UniformResponse>
             <Layer0 />
-            <Layer1 />
+            <GutterTemplate />
+            <Layer2 />
         </UniformResponse>
     )
 }

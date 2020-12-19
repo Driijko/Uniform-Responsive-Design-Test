@@ -1,7 +1,3 @@
-import {useState} from "react";
-
-import {Redirect} from "react-router-dom";
-
 export default function Layer0({width, height, children}) {
     const style = {
         position: "absolute",
