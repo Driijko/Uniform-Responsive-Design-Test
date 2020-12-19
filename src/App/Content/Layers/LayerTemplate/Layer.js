@@ -1,6 +1,7 @@
 import NavBar from "./NavBar";
 
-export default function Layer({width, height, children}) {
+export default function Layer({width, height, phase, children}) {
+
     const style = {
         position: "absolute",
         boxSizing: "border-box",

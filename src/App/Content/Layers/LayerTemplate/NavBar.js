@@ -2,7 +2,6 @@
 import {$h1, $navLink} from "../../styling";
 
 export default function Header({width}) {
-    console.log(width);
 
     return (
         <header>

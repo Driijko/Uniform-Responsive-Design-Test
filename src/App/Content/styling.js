@@ -21,7 +21,7 @@ const $navLink = styled.a`${props=>css`
     text-align: center;
     color: orange;
     cursor: pointer;
-`}`
+`}`;
 
 export {$h1, $navLink};
 
