@@ -1,54 +1,33 @@
-import {hor, ver} from "../../../settings";
-import styleElement from "../styleElement";
+// import styleElement from "../../Styling/styleElement";
+import {$h1, $navLink} from "../../styling";
 
 export default function Header({width}) {
     console.log(width);
 
-    const styles = {
-        h1: {
-            // boxSizing: "border-box",
-            // border: "5px solid white",
-
-            fontSize: `${width/9}px`,
-            textAlign: "center",
-        },
-        navLink: {
-            // boxSizing: "border-box",
-            // border: "3px solid white",
-
-            textDecoration: "none",
-            fontSize: `${width / 10}px`,
-            textAlign: "center",
-            color: "orange",
-        }
-    };
-
     return (
         <header>
-            <h1 style={styleElement(0, 1, 20, 3, styles.h1)}>
+            <$h1 spatial={[0, 2, 20, 3]} width={width}>
                 Modern Art
-            </h1>
+            </$h1>
             <nav>
                 <ul>
                     <li>
-                        <a href="" style={styleElement(0, 9, 20, 2, styles.navLink)}>
+                        <$navLink spatial={[0, 9, 20, 2]} width={width}>
                             Home
-                        </a>
+                        </$navLink>
                     </li>
                     <li>
-                        <a href="" style={styleElement(0, 12, 20, 2, styles.navLink)}>
+                        <$navLink spatial={[0, 12, 20, 2]} width={width}>
                             Articles
-                        </a>
+                        </$navLink>
                     </li>
-                    <li>
-                        <a href="" style={styleElement(0, 15, 20, 2, styles.navLink)}>
+                        <$navLink spatial={[0, 15, 20, 2]} width={width}>
                             About
-                        </a>
-                    </li>
+                        </$navLink>
                     <li>
-                        <a href="" style={styleElement(0, 18, 20, 2, styles.navLink)}>
+                        <$navLink spatial={[0, 18, 20, 2]} width={width}>
                             Contact
-                        </a>
+                        </$navLink>
                     </li>
                 </ul>
             </nav>
