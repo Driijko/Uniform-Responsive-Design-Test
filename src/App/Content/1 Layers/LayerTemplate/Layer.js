@@ -13,6 +13,9 @@ import StyledH1 from "../../3 Styling/StyledH1"
 // Import helpers -------------------------------------------------
 import direction from "../../3 Styling/helpers/direction";
 
+// SETTINGS ////////////////////////////////////////////////////////
+const enterTime = 4;
+
 // STYLE ///////////////////////////////////////////////////////////
 
 const enter = `
@@ -29,16 +32,27 @@ const LayerDiv = styled("div")`${props=>css`
     width: ${props.width}px;
     height: ${props.height}px;
     background-color: red;
-    animation: ${direction(enter, steady)} 4s ease-in forwards;
+    animation: ${direction(enter, steady)} ${enterTime}s ease-in forwards;
 `}`
 
 // SETTINGS ////////////////////////////////////////////////////////
 const maxFocusableElements = 5;
 
 // MAIN COMPONENT ///////////////////////////////////////////////////
-export default function Layer({width, height, phase, children}) {
+export default function Layer({width, height, children}) {
 
     // STATE ///////////////////////////////////////////////////////
+    const [phase, setPhase] = useState("enter");
+
+    // Phase ------------------------------------------------------
+    const timerId = setTimeout(() => {
+        setPhase("steady");
+        clearTimeout(timerId);
+    }, enterTime * 1000);
+
+    useEffect(()=> {
+        console.log(phase);
+    }, [phase])
     
     // Focus -------------------------------------------------------
     const [tabIndex, setTabIndex] = useState(0);

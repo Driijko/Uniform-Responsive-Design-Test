@@ -12,15 +12,18 @@ const phaseTiming = {
     exit: 1,
 };
 
-export default function HomePage(props) {
-    const [phase, setPhase] = useState({
-        phase: "enter",
-        phaseTiming: phaseTiming["enter"],
-    });
+export default function PageTemplate(props) {
+
+    // If you want to animate each layer according to a single
+    // timing specification ...
+    // const [phase, setPhase] = useState({
+    //     phase: "enter",
+    //     phaseTiming: phaseTiming["enter"],
+    // });
 
     return (
         <UniformResponse>
-            <Layer phase={phase}/>
+            <Layer />
             <GutterTemplate />
             <Layer2 />
         </UniformResponse>
