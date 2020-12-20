@@ -50,6 +50,6 @@ export default function NavLink({children, spatial, width, focus, selected, link
         >
             {children}
         </StyledNavLink>
-    )
+    );
     
-}
+};
