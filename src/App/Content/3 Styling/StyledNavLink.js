@@ -37,9 +37,3 @@ const StyledNavLink = styled.a`${props=>css`
 `}`;
 
 export default StyledNavLink;
-
-// ${props.focus ?
-//     highlight(true)
-//     : highlight(false)
-// }
-// &:hover {${highlight(true)}}

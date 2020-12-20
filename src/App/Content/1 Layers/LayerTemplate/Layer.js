@@ -1,7 +1,8 @@
 // IMPORTS /////////////////////////////////////////////////////////////////////////////////
 // Import libraries ---------------------------------------------
 import {useState, useEffect} from "react";
-import styled, {css, keyframes} from "styled-components";
+import {Redirect} from "react-router-dom";
+import styled, {css} from "styled-components";
 
 // Import custom hooks ---------------------------------------------
 import useKey from "../../../Input/useKey";
@@ -15,13 +16,32 @@ import direction from "../../3 Styling/helpers/direction";
 
 // STYLE ///////////////////////////////////////////////////////////////////////////////////////
 
-const enter = `
+const transit = `
     opacity: 0;
-`
+`;
 
 const steady = `
     opacity: 1;
-`
+`;
+
+function transistion(phase) {
+    if (phase === "enter") {
+        return css`
+            animation: ${direction(transit, steady)} ${enterTime}s ease-out forwards;
+        `;
+    }
+    else if (phase === "exiting") {
+        return css`
+            animation: ${direction(steady, transit)} ${exitTime}s ease-out forwards;
+        `;
+    }
+    // else {
+    //     return css``;
+    // };
+};
+
+// animation: ${direction(enter, steady)} ${enterTime}s ease-out forwards;
+
 
 const LayerDiv = styled("div")`${props=>css`
     position: absolute;
@@ -29,12 +49,13 @@ const LayerDiv = styled("div")`${props=>css`
     width: ${props.width}px;
     height: ${props.height}px;
     background-color: red;
-    animation: ${direction(enter, steady)} ${enterTime}s ease-out forwards;
-`}`
+    ${transistion(props.phase)};
+`}`;
 
 // SETTINGS ///////////////////////////////////////////////////////////////////////////////////
 const maxFocusableElements = 5;
 const enterTime = 4;
+const exitTime = 2;
 
 // MAIN COMPONENT /////////////////////////////////////////////////////////////////////////////
 export default function Layer({width, height, children}) {
@@ -43,12 +64,28 @@ export default function Layer({width, height, children}) {
 
     // Phase ------------------------------------------------------
     const [phase, setPhase] = useState("enter");
+    const [leaveTo, setLeaveTo] = useState(null);
 
-    const timerId = setTimeout(() => {
-        setPhase("steady");
-        clearTimeout(timerId);
-    }, enterTime * 1000);
+    useEffect(()=> {
+        const timerId = setTimeout(() => {
+            setPhase("steady");
+            clearTimeout(timerId);
+        }, enterTime * 1000);
+    },[]);
 
+    useEffect(()=> {
+        if (phase === "exiting") {
+            const timerId = setTimeout(()=> {
+                setPhase("exit");
+                clearTimeout(timerId);
+            }, exitTime * 1000);
+        }
+    },[phase]);
+
+    function triggerExit(to) {
+        setLeaveTo(to);
+        setPhase("exiting");
+    };
     
     // Focus -------------------------------------------------------
     const [tabIndex, setTabIndex] = useState(0);
@@ -69,7 +106,11 @@ export default function Layer({width, height, children}) {
 
     // RENDER //////////////////////////////////////////////////////////////////////////////////
     return (
-        <LayerDiv width={width} height={height}>          
+        <LayerDiv width={width} height={height} phase={phase}>
+            {phase === "exit" ?
+                <Redirect to={leaveTo}/>
+                : null
+            }       
             <header>
                 <StyledH1 spatial={[0, 2, 20, 3]} width={width}>
                     Modern Art
@@ -116,6 +157,7 @@ export default function Layer({width, height, children}) {
                                 width={width}
                                 focus={tabIndex === 5}
                                 linkTo={"./page1"}
+                                triggerExit={triggerExit}
                             >
                                 NavLink
                             </NavLink>
@@ -125,4 +167,4 @@ export default function Layer({width, height, children}) {
             </header>
         </LayerDiv>
     );
-}
+};

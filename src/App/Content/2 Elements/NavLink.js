@@ -2,9 +2,9 @@ import {useState, useEffect} from "react";
 
 import StyledNavLink from "../3 Styling/StyledNavLink";
 
-export default function NavLink({children, spatial, width, focus, linkTo}) {
+export default function NavLink({children, spatial, width, focus, linkTo, triggerExit}) {
 
-    // HIGHLIGHTING ////////////////////////////////////////////////
+    // HIGHLIGHTING //////////////////////////////////////////////////////////////////////
 
     const [highlight, setHighlight] = useState(null);
 
@@ -25,6 +25,12 @@ export default function NavLink({children, spatial, width, focus, linkTo}) {
         setHighlight(false);
     }
 
+    function handleClick() {
+        triggerExit(linkTo);
+    }
+
+    // RENDER /////////////////////////////////////////////////////////////////////////////
+
     return (
         <StyledNavLink 
             spatial={spatial}
@@ -32,6 +38,7 @@ export default function NavLink({children, spatial, width, focus, linkTo}) {
             highlight={highlight}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
         >
             {children}
         </StyledNavLink>
