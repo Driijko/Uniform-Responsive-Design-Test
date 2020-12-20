@@ -1,4 +1,4 @@
-// IMPORTS ///////////////////////////////////////////////////////
+// IMPORTS /////////////////////////////////////////////////////////////////////////////////
 // Import libraries ---------------------------------------------
 import {useState, useEffect} from "react";
 import styled, {css, keyframes} from "styled-components";
@@ -13,10 +13,7 @@ import StyledH1 from "../../3 Styling/StyledH1"
 // Import helpers -------------------------------------------------
 import direction from "../../3 Styling/helpers/direction";
 
-// SETTINGS ////////////////////////////////////////////////////////
-const enterTime = 4;
-
-// STYLE ///////////////////////////////////////////////////////////
+// STYLE ///////////////////////////////////////////////////////////////////////////////////////
 
 const enter = `
     opacity: 0;
@@ -32,27 +29,26 @@ const LayerDiv = styled("div")`${props=>css`
     width: ${props.width}px;
     height: ${props.height}px;
     background-color: red;
-    animation: ${direction(enter, steady)} ${enterTime}s ease-in forwards;
+    animation: ${direction(enter, steady)} ${enterTime}s ease-out forwards;
 `}`
 
-// SETTINGS ////////////////////////////////////////////////////////
+// SETTINGS ///////////////////////////////////////////////////////////////////////////////////
 const maxFocusableElements = 5;
+const enterTime = 4;
 
-// MAIN COMPONENT ///////////////////////////////////////////////////
+// MAIN COMPONENT /////////////////////////////////////////////////////////////////////////////
 export default function Layer({width, height, children}) {
 
-    // STATE ///////////////////////////////////////////////////////
-    const [phase, setPhase] = useState("enter");
+    // STATE /////////////////////////////////////////////////////////////////////////////////
 
     // Phase ------------------------------------------------------
+    const [phase, setPhase] = useState("enter");
+
     const timerId = setTimeout(() => {
         setPhase("steady");
         clearTimeout(timerId);
     }, enterTime * 1000);
 
-    useEffect(()=> {
-        console.log(phase);
-    }, [phase])
     
     // Focus -------------------------------------------------------
     const [tabIndex, setTabIndex] = useState(0);
@@ -71,7 +67,7 @@ export default function Layer({width, height, children}) {
         }
     },[tab]);
 
-    // RENDER ///////////////////////////////////////////////////////
+    // RENDER //////////////////////////////////////////////////////////////////////////////////
     return (
         <LayerDiv width={width} height={height}>          
             <header>

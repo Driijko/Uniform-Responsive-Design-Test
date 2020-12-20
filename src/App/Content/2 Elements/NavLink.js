@@ -6,7 +6,7 @@ export default function NavLink({children, spatial, width, focus, linkTo}) {
 
     // HIGHLIGHTING ////////////////////////////////////////////////
 
-    const [highlight, setHighlight] = useState(false);
+    const [highlight, setHighlight] = useState(null);
 
     useEffect(()=> {
         if (focus) {

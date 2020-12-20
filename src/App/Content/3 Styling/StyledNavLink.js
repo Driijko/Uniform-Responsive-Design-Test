@@ -14,13 +14,15 @@ const highlighted = `
 const notHighlighted = ``;
 
 function highlight(highlight) {
-    if (highlight) {return css`
-        animation: ${direction(notHighlighted, highlighted)} 0.25s linear forwards;
+    if (highlight === null) {
+        return ``;
+    }
+    else if (highlight) {return css`
+        animation: ${direction(notHighlighted, highlighted)} 1.5s ease-out forwards;
     `}
     else {return css`
-        animation: ${direction(highlighted, notHighlighted)} 1s linear forwards;
-        border: 3px solid rgba(0, 0, 0, 0);
-    `}
+        animation: ${direction(highlighted, notHighlighted)} 1s ease-out forwards;
+    `};
 };
 
 const StyledNavLink = styled.a`${props=>css`
@@ -29,7 +31,8 @@ const StyledNavLink = styled.a`${props=>css`
     text-align: center;
     cursor: pointer;
     box-sizing: border-box;
-    color: orange;
+    border: 3px solid rgba(0, 0, 0, 0);
+    color: darkOrange;
     ${highlight(props.highlight)}
 `}`;
 
