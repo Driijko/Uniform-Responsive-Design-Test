@@ -6,8 +6,10 @@ export default function useKey(key) {
 
     // Does an event match the key we're watching?
     const match = event => {
-        event.preventDefault();
-        return key.toLowerCase() == event.key.toLowerCase()
+        if (key.toLowerCase() === event.key.toLowerCase()) {
+            event.preventDefault();
+        }
+        return key.toLowerCase() === event.key.toLowerCase()
     }
     // Event handlers
     const onDown = event => {

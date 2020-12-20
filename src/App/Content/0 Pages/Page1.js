@@ -1,5 +1,5 @@
 import UniformResponse from "../../Responsive/UniformResponse/UniformResponse";
-import Layer2 from "../Layers/Layer2";
+import Layer2 from "../1 Layers/Layer2";
 
 export default function Page1(props) {
     return (

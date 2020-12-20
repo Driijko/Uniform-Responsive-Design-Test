@@ -1,11 +1,9 @@
-import {useState} from "react";
-
 import UniformResponse from "../../Responsive/UniformResponse/UniformResponse";
 
-import Layer0 from "../Layers/Layer0";
-import GutterTemplate from "../Layers/GutterTemplate";
-import Layer2 from "../Layers/Layer2";
-import Layer from "../Layers/LayerTemplate/Layer";
+import Layer0 from "../1 Layers/Layer0";
+import GutterTemplate from "../1 Layers/GutterTemplate";
+import Layer2 from "../1 Layers/Layer2";
+import Layer from "../1 Layers/LayerTemplate/Layer";
 
 export default function HomePage(props) {
     return (

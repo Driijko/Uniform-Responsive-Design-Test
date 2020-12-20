@@ -1,11 +1,10 @@
 import {Switch, Route} from "react-router-dom";
 
-import HomePage from "./Content/Pages/HomePage";
-import Page1 from "./Content/Pages/Page1";
-import PageTemplate from "./Content/Pages/PageTemplate";
+import HomePage from "./Content/0 Pages/HomePage";
+import Page1 from "./Content/0 Pages/Page1";
+import PageTemplate from "./Content/0 Pages/PageTemplate";
 
 function App() {
-
   return (
     <div>
         <Switch>
