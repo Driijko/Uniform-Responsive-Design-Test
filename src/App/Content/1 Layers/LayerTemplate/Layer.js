@@ -30,18 +30,13 @@ function transistion(phase) {
             animation: ${direction(transit, steady)} ${enterTime}s ease-out forwards;
         `;
     }
-    else if (phase === "exiting") {
+    else if (phase === "exiting" || phase === "exit") {
         return css`
             animation: ${direction(steady, transit)} ${exitTime}s ease-out forwards;
         `;
     }
-    // else {
-    //     return css``;
-    // };
+
 };
-
-// animation: ${direction(enter, steady)} ${enterTime}s ease-out forwards;
-
 
 const LayerDiv = styled("div")`${props=>css`
     position: absolute;

@@ -27,5 +27,5 @@ export default function PageTemplate(props) {
             <GutterTemplate />
             <Layer2 />
         </UniformResponse>
-    )
-}
+    );
+};
