@@ -17,8 +17,8 @@ export default function Audio({sfx, playSfx, loop}) {
         if (playSfx !== null) {
             audioElementRef.current.currentTime = 0;
             audioElementRef.current.play();            
-        }
-    },[playSfx])
+        };
+    },[playSfx]);
 
     return audioElement;
 };

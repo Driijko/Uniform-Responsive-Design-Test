@@ -34,8 +34,7 @@ function transistion(phase) {
         return css`
             animation: ${direction(steady, transit)} ${exitTime}s ease-out forwards;
         `;
-    }
-
+    };
 };
 
 const LayerDiv = styled("div")`${props=>css`
@@ -55,34 +54,70 @@ const exitTime = 2;
 // MAIN COMPONENT /////////////////////////////////////////////////////////////////////////////
 export default function Layer({width, height, children}) {
 
-    // STATE /////////////////////////////////////////////////////////////////////////////////
 
-    // Phase ------------------------------------------------------
+    // PHASE /////////////////////////////////////////////////////////////////////////////
+
     const [phase, setPhase] = useState("enter");
+    const [checkReadyForSteady, setCheckReadyForSteady] = useState(false);
+    const [toSteadyTimerId, setToSteadyTimerId] = useState(null);
     const [leaveTo, setLeaveTo] = useState(null);
 
     useEffect(()=> {
-        const timerId = setTimeout(() => {
-            setPhase("steady");
-            clearTimeout(timerId);
-        }, enterTime * 1000);
-    },[]);
-
-    useEffect(()=> {
-        if (phase === "exiting") {
+        if (phase === "enter") {
+            setToSteadyTimerId(setTimeout(() => {
+                if (phase === "enter") {
+                    setCheckReadyForSteady(true);
+                };
+                clearTimeout(toSteadyTimerId);
+            }, enterTime * 1000));
+        }
+        else if (phase === "exiting") {
             const timerId = setTimeout(()=> {
                 setPhase("exit");
                 clearTimeout(timerId);
             }, exitTime * 1000);
-        }
-    },[phase]);
+        };
+        return () => {
+            clearTimeout(toSteadyTimerId);
+            return toSteadyTimerId;
+        };
+    }, [phase]);
 
+    useEffect(()=> {
+        if (checkReadyForSteady && phase === "enter") {
+            setPhase("steady");
+        };
+    }, [checkReadyForSteady]);
+
+    // Transistion from "enter" phase to "steady" phase.
+    // useEffect(()=> {
+    //     const timerId = setTimeout(() => {
+    //         console.log("From inside steady timeout", phase);
+    //         if (phase === "enter") {
+    //             setPhase("steady");
+    //         };
+    //         clearTimeout(timerId);
+    //     }, enterTime * 1000);
+    // },[]);
+
+    // // Transistion from "exiting" phase to "exit" phase.
+    // useEffect(()=> {
+    //     if (phase === "exiting") {
+    //         const timerId = setTimeout(()=> {
+    //             setPhase("exit");
+    //             clearTimeout(timerId);
+    //         }, exitTime * 1000);
+    //     };
+    //     console.log("From inside phase:", phase)
+    // },[phase]);
+
+    // Passed down to links so they can trigger "exiting" phase.
     function triggerExit(to) {
         setLeaveTo(to);
         setPhase("exiting");
     };
     
-    // Focus -------------------------------------------------------
+    // FOCUS and ENTERSELECT ///////////////////////////////////////////////////////////////////
     const [tabIndex, setTabIndex] = useState(0);
 
     // 'useKey' returns true if key is held down.

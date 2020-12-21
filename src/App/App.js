@@ -1,6 +1,5 @@
 import {Switch, Route} from "react-router-dom";
 
-import HomePage from "./Content/0 Pages/HomePage";
 import Page1 from "./Content/0 Pages/Page1";
 import PageTemplate from "./Content/0 Pages/PageTemplate";
 

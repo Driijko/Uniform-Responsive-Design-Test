@@ -1,16 +1,13 @@
-import {useState} from "react";
-
 import UniformResponse from "../../Responsive/UniformResponse/UniformResponse";
 
-import Layer0 from "../1 Layers/Layer0";
 import GutterTemplate from "../1 Layers/GutterTemplate";
 import Layer2 from "../1 Layers/Layer2";
 import Layer from "../1 Layers/LayerTemplate/Layer";
 
-const phaseTiming = {
-    enter: 3,
-    exit: 1,
-};
+// const phaseTiming = {
+//     enter: 3,
+//     exit: 1,
+// };
 
 export default function PageTemplate(props) {
 
@@ -21,6 +18,11 @@ export default function PageTemplate(props) {
     //     phaseTiming: phaseTiming["enter"],
     // });
 
+    // Two components within the Uniform Response component
+    // signal a single layer with gutter.
+    // Three components signals to use the dual container
+    // option, window size permitting.
+    // Ordering matters: primary layer, gutter, secondary layer
     return (
         <UniformResponse>
             <Layer />
