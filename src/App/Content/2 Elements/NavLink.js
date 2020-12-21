@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext} from "react";
+import {useState, useEffect} from "react";
 
 import StyledNavLink from "../3 Styling/StyledNavLink";
 
@@ -7,25 +7,29 @@ import Audio from "../4 Audio/Audio";
 import sfxNavLinkHighlight from "../5 Assets/audio/sfx/navLinkHighlight.mp3";
 import sfxNavLinkSelected from "../5 Assets/audio/sfx/navLinkSelected.mp3";
 
-export default function NavLink({children, spatial, width, focus, selected, linkTo, triggerExit}) {
+export default function NavLink({children, spatial, width, focus, enterSelect, linkTo, triggerExit}) {
 
     // SFX ///////////////////////////////////////////////////////////////////////////////
-    const [sfx, setSfx] = useState(sfxNavLinkHighlight);
+    // Sound effects are passed to the Audio component in an array.
+    // We can determine which sound-effect to play by indicating an index for that 
+    // array with 'playSfx'.
+    const [playSfx, setPlaySfx] = useState(null);
 
     // HIGHLIGHTING //////////////////////////////////////////////////////////////////////
 
     const [highlight, setHighlight] = useState(null);
 
+    // Focus -----------------------------------------------------------
     useEffect(()=> {
         if (focus) {
             setHighlight(true);
-            setSfx(sfxNavLinkHighlight);
         }
         else if (highlight === true) {
             setHighlight(false);
         };
     },[focus]);
 
+    // Mouse Handlers --------------------------------------------------
     function handleMouseEnter() {
         setHighlight(true);
     };
@@ -34,18 +38,39 @@ export default function NavLink({children, spatial, width, focus, selected, link
         setHighlight(false);
     };
 
-    // SELECTION //////////////////////////////////////////////////////////////////////////
-
-    function handleClick() {
-        triggerExit(linkTo);
-    };
+    // Sfx -----------------------------------------------------------------
 
     useEffect(()=> {
-        if(selected) {
-            triggerExit(linkTo);
-            // setSfx(sfxNavLinkSelected);
+        if (highlight) {
+            setPlaySfx(0);
         }
-    },[selected]);
+        else {
+            setPlaySfx(null);
+        }
+    },[highlight]);
+
+    // SELECTION //////////////////////////////////////////////////////////////////////////
+    const [selected, setSelected] = useState(false);
+
+    // Mouse Handler ------------------------------------------
+    function handleClick() {
+        setSelected(true);
+    };
+
+    // User presses 'enter' key --------------------------------
+    useEffect(()=> {
+        if (enterSelect) {
+            setSelected(true);
+        };
+    }, [enterSelect]);
+
+    // Trigger sound effect and exitting phase for layer -------------------
+    useEffect(()=> {
+        if (selected) {
+            triggerExit(linkTo);
+            setPlaySfx(1);
+        };
+    },[selected])
 
     // RENDER /////////////////////////////////////////////////////////////////////////////
 
@@ -59,11 +84,13 @@ export default function NavLink({children, spatial, width, focus, selected, link
             onClick={handleClick}
         >
             <Audio 
-                filePath={sfx} 
-                play={highlight || selected}
+                sfx={[
+                    sfxNavLinkHighlight,
+                    sfxNavLinkSelected,
+                ]}
+                playSfx={playSfx}
             />
             {children}
         </StyledNavLink>
-    );
-    
+    );   
 };

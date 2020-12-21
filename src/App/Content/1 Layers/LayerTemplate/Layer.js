@@ -152,7 +152,7 @@ export default function Layer({width, height, children}) {
                                 spatial={[0, 25, 20, 3]}
                                 width={width}
                                 focus={tabIndex === 5}
-                                selected={tabIndex === 5 && enter}
+                                enterSelect={tabIndex === 5 && enter}
                                 linkTo={"./page1"}
                                 triggerExit={triggerExit}
                             >
